@@ -1,0 +1,51 @@
+name: Build and Package Techura JavaFX App
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Java 24
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '24'
+
+      - name: Cache Maven packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-maven
+
+      - name: Build JAR with Maven
+        run: mvn clean package
+
+      - name: Package EXE with jpackage
+        run: |
+          mkdir dist
+          jpackage ^
+            --input target ^
+            --name Techura ^
+            --main-jar your-main.jar ^
+            --main-class your.main.Class ^
+            --type exe ^
+            --icon app__icon.png ^
+            --dest dist ^
+            --win-dir-chooser ^
+            --win-menu ^
+            --win-shortcut
+
+      - name: Upload EXE Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: techura-windows-installer
+          path: dist/*.exe
