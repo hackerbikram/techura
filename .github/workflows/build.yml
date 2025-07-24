@@ -29,6 +29,7 @@ jobs:
           echo "JAVA_FX_SDK=${{ github.workspace }}/javafx-sdk-22.0.1" >> $GITHUB_ENV
 
       - name: Package EXE using jpackage
+        shell: cmd
         run: |
           mkdir output
           jpackage ^
