@@ -38,7 +38,7 @@ jobs:
             --input target ^
             --main-jar techura.jar ^
             --main-class techura.Main ^
-            --icon app__icon.png ^
+            --icon app_icon.png ^
             --java-options "--enable-preview" ^
             --module-path "%JAVA_FX_SDK%/lib" ^
             --add-modules javafx.controls,javafx.fxml ^
