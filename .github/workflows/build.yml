@@ -19,16 +19,15 @@ jobs:
           distribution: 'temurin'
           java-version: '24'
 
-      - name: Set up JavaFX
+      - name: Download and Extract JavaFX
         run: |
           curl -L -o javafx.zip https://download2.gluonhq.com/openjfx/22.0.1/openjfx-22.0.1_windows-x64_bin-sdk.zip
-          tar -xf javafx.zip
+          powershell -Command "Expand-Archive -Path 'javafx.zip' -DestinationPath '.'"
           ren openjfx-22.0.1 javafx-sdk
         shell: cmd
 
       - name: Copy app icon to root
-        run: |
-          copy src\\main\\resources\\icons\\app_icon.png app_icon.png
+        run: copy src\main\resources\icons\app_icon.png app_icon.png
         shell: cmd
 
       - name: Build with Maven
@@ -45,7 +44,7 @@ jobs:
             --main-class techura.Main ^
             --icon app_icon.png ^
             --java-options "--enable-preview" ^
-            --module-path javafx-sdk\\lib ^
+            --module-path javafx-sdk\lib ^
             --add-modules javafx.controls,javafx.fxml ^
             --dest output
         shell: cmd
